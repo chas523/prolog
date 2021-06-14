@@ -324,3 +324,111 @@ wyswietlWlasciciela(dom(X,Y,U,K,J)):-
 % zwierz. zebra
 % sport. _578
 % true.
+
+% Część B
+
+% osoba
+osoba(profesja, przekaska, ubranie, gra, imie).
+
+% kolejka
+kolejka(os1, os2, os3, os4, os5).
+
+% stoiWKolejce(Os,K) - na jakim miejscu czeka osoba
+stoiWKolejce(Os,kolejka(Os,_,_,_,_)).
+stoiWKolejce(Os,kolejka(_,Os,_,_,_)).
+stoiWKolejce(Os,kolejka(_,_,Os,_,_)).
+stoiWKolejce(Os,kolejka(_,_,_,Os,_)).
+stoiWKolejce(Os,kolejka(_,_,_,_,Os)).
+
+% naSriodku(Os,K) - osoba czeka na śriodku kolejki
+naSriodku(Os, kolejka(_,_,Os,_,_)).
+
+% obokTuzPrawej(X,Y,K) - osoba X stoi tuż stronie od osoby Y
+obokTuzPrawej(X,Y,kolejka(Y,X,_,_,_)).
+obokTuzPrawej(X,Y,kolejka(_,Y,X,_,_)).
+obokTuzPrawej(X,Y,kolejka(_,_,Y,X,_)).
+obokTuzPrawej(X,Y,kolejka(_,_,_,Y,X)).
+
+% obok
+% obok(X,Y,K) - osoba X czeka obok osoby Y
+obok(X,Y,K) :- obokTuzPrawej(X,Y,K).
+obok(X,Y,K) :- obokTuzPrawej(Y,X,K).
+
+% pierwszaWKolejce(Os,K) - osoba stoi na początku koleji
+pierwszaWKolejce(K, kolejka(Os,_,_,_,_)).
+
+% rozwiazanie 
+rozwiazanie(K):- 
+   naSriodku(osoba(_,_,garnitura,_,_), K),
+   stoiWKolejce(osoba(matematyk,_,_,_,jacek), K),
+   obok(osoba(_,_,_,_,jacek), osoba(_,_,_,lola,_), K),
+   pierwszaWKolejce(osoba(_,focacci,_,_,_), K),
+   obok(osoba(_,_,_,_,weronika), osoba(_,_,_,valorant,_), K),
+   stoiWKolejce(osoba(_,frytki,kapeluch,_,_), K),
+   stoiWKolejce(osoba(_,_,_,cyberpank,krzysiek), K),
+   stoiWKolejce(osoba(_,paluszki,_,_,andrzej), K),
+   obok(osoba(kierowca,_,_,_,_), osoba(_,focaccie,_,_,_), K),
+   stoiWKolejce(osoba(kucharz,_,sportowe,_,_), K),
+   stoiWKolejce(osoba(_,chipsy,_,call_of_duty,_), K),
+   obokPoPrawej(osoba(kucharz,_,_,_,_),osoba(operator_koparki,_,_,_,_),K),
+   stoiWKolejce(osoba(_,_,kowbojki,_,zbyszek), K),
+   obok(osoba(_,kapelusz,_,_,_), osoba(_,_szal,_,_,_), K),
+   stoiWKolejce(osoba(programista,laguny,_,_,_), K).
+
+% wyświetlamy kolejność w kolejce
+wyswietlKtoGraWiedzmina(osoba(X,Y,U,K,J)):-
+   write('profesja:'),nl,
+   write('przekaska. '),writeln(X),
+   write('ubranie. '),writeln(Y),
+   write('gra. '),writeln(U),
+   write('imie. '),writeln(K).
+
+% wyświetlamy kolejność w kolejce
+   wyswietlInformacje(kolejka(os1, os2, os3, os4, os5)):-
+   wyswietlKtoGraWiedzmina(os1),
+   wyswietlKtoGraWiedzmina(os2),
+   wyswietlKtoGraWiedzmina(os3),
+   wyswietlKtoGraWiedzmina(os4),
+   wyswietlKtoGraWiedzmina(os5).
+
+% ?- wyswietlKtoGraWiedzmina(osoba(_,_,_,wiedzmin,_)).
+% kto gra w wiedzmina:
+% profesja. _5840
+% przekaska. _5842
+% ubranie. _5844
+% gra. wiedzmin
+% imie. _5848
+% true.
+
+% ?- wyswietlInformacje(kolejka(_,_,_,_,_)),false.
+% kto gra w wiedzmina:
+% profesja. _10882
+% przekaska. _10884
+% ubranie. _10886
+% gra. _10888
+% imie. _10890
+% kto gra w wiedzmina:
+% profesja. _10894
+% przekaska. _10896
+% ubranie. _10898
+% gra. _10900
+% imie. _10902
+% kto gra w wiedzmina:
+% profesja. _10906
+% przekaska. _10908
+% ubranie. _10910
+% gra. _10912
+% imie. _10914
+% kto gra w wiedzmina:
+% profesja. _10918
+% przekaska. _10920
+% ubranie. _10922
+% gra. _10924
+% imie. _10926
+% kto gra w wiedzmina:
+% profesja. _10930
+% przekaska. _10932
+% ubranie. _10934
+% gra. _10936
+% imie. _10938
+% false.
