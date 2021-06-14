@@ -156,6 +156,71 @@ times(s(X),Y,Z) :- times(X,Y,Q), add(Y,Q,Z).
 % X/Y = Q (W arytmetyce liczb naturalnych )
 quatient()
 
+% Laboratorium 4 listy 
+% ?- G = 3, O=[4,5,6], L=[O|G].
+% G = 3,
+% O = [4, 5, 6],
+% L = [[4, 5, 6]|3].
+
+% ?- L = [2], L=[X|Y].
+% L = [2],
+% X = 2,
+% Y = [].
+
+%  L = [2], L=[X, Y|Z].
+% false.
+
+% jeśli L1 jest puste to L3 = L2
+% jeśli L1 nie jest puste, to L3 jest uzyskiwane przez umieszczenie głowy L1 na początku listy uzyskanej przez połączenie ogona % L1 z L2
+concat([],L2,L2).
+concat([Head|Tail],L2,[Head|L3]):-concat(Tail,L2,L3).
+
+% ?- concat([1,2],X,[1,2,3,4,5]).
+% X = [3, 4, 5].
+
+% ?- concat(X,Y,[p,r,l,o,g]).
+% X = [],
+% Y = [p, r, l, o, g] ;
+% X = [p],
+% Y = [r, l, o, g] ;
+% X = [p, r],
+% Y = [l, o, g] ;
+% X = [p, r, l],
+% Y = [o, g] ;
+% X = [p, r, l, o],
+% Y = [g] ;
+% X = [p, r, l, o, g],
+% Y = [] ;
+% false.
+
+% ?- concat([2,3,5],[7,11,13,17],X).
+% X = [2, 3, 5, 7, 11, 13, 17].
+
+% ?- concat([d,z,i,e,n],[d,o,b,r,y],X).
+% X = [d, z, i, e, n, d, o, b, r|...].
+
+% Ten program skutecznie usuwa wszystkie wystąpienia litery z listy
+% Wstawianie elementu do listy jest dokładnym przeciwieństwem usuwania elementu. Dlatego nie jest nawet konieczne pisanie
+% oddzielnego programu, a jedynie użycie predykatu delete w inny sposób.
+delete1(Head,[Head|Tail],Tail).
+delete1(X,[Y|Tail],[Y|L1]):-delete1(X,Tail,L1).
+
+% ?- delete1(1,[4,8,5,1],X).
+% X = [4, 8, 5] ,
+% false.
+
+% ?- delete1(43,X,[a,b,c,d]).
+% X = [43, a, b, c, d] ;
+% X = [a, 43, b, c, d] ;
+% X = [a, b, 43, c, d] ;
+% X = [a, b, c, 43, d] ;
+% X = [a, b, c, d, 43] ;
+% false.
+
+% ?- delete1(X,[s,z,t,u,k,a],[s,z,u,k,a]).
+% X = t ;
+% false.
+
 % Laboratorium 5
 
 % Zadanie 1
