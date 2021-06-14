@@ -147,14 +147,58 @@ even(s(s(X))):-odd(X).
 % ?- odd(s(s(zero))).
 % yes
 
-% jest prawdziwy jezeli XY = Z 
-times(zero,X,zero) :- isnumber(X).
-times(s(X),Y,Z) :- times(X,Y,Q), add(Y,Q,Z).
-% ?- times(s(s(zero)), s(s(zero)),X).
-% yes
 
-% X/Y = Q (W arytmetyce liczb naturalnych )
-quatient()
+
+% jest prawdziwy jezeli XY = Z 
+times(X,Y,Z) :-
+    Z is X*Y.
+% ?- times(1,2,2).
+% true
+
+% jest prawdzuwy jezeli  X/Y = Q (W arytmetyce liczb naturalnych )
+quatient(X,Y,Q) :-
+    Q is X / Y.
+
+% jest prawdziwy jezeli X dzielone przez Y daje reszte R 
+remainder(X,Y,R) :-
+    R is mod(X,Y).
+
+% jest prawdziwy jezeli F = N!. 
+fact(0,1).
+fact(N,F) :-  
+   N>0, 
+   N1 is N-1, 
+   fact(N1,F1), 
+   F is N * F1.
+   
+% ?- fact(3,6)
+% true
+% ?- fact(3,W)
+% W - 6
+
+% jest prawdziwe jezeli F jesr N-ta licba Fibonacciego
+fibonacci(0, 0).
+fibonacci(1, 1).
+fibonacci(N, F) :-
+        N > 1,
+        N1 is N-1,
+        N2 is N-2,
+        fibonacci(N1, F1),
+        fibonacci(N2, F2),
+        F is F1+F2.
+% ?- fibonacci(15,X). 
+% X = 610
+% fibonacci(15,610).
+% true  
+
+% jest prawdziwy gdzy X symbol odpowiada liczbe naturalnej N 
+shownumber(X,N) :-
+
+
+
+% ?- shownumber(s(zero),1).
+% true
+
 
 % Laboratorium 4 listy 
 % ?- G = 3, O=[4,5,6], L=[O|G].
