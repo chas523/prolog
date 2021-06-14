@@ -154,6 +154,16 @@ times(X,Y,Z) :-
     Z is X*Y.
 % ?- times(1,2,2).
 % true
+% 1) przypadek prosty
+% 0*X=0
+times(zero,_,zero).
+% 2) przypadek złozony
+% Jeżeli X*Y=Z oraz Z+Y=W to
+% (X+1)*Y=W.
+times(s(X),Y,W) :-
+    times(X,Y,Z),add(Z,Y,W).
+
+
 
 % jest prawdzuwy jezeli  X/Y = Q (W arytmetyce liczb naturalnych )
 quatient(X,Y,Q) :-
@@ -191,10 +201,33 @@ fibonacci(N, F) :-
 % fibonacci(15,610).
 % true  
 
-% jest prawdziwy gdzy X symbol odpowiada liczbe naturalnej N 
-shownumber(X,N) :-
 
+%  przypaek prosty
+% x = y, to x/y = 1
+quotient(X,X,s(zero)) :-
+    isnumber(s(zero)).
+% przypaek prosty
+% x < y, to 0
+quotient(X,X,s(zero)) :-
+    isnumber(s(zero)).
+% 3) przypadek zieolony
+% Jezeli X/Y=Q+1 oraz Y+Q=X to
+% (X+1)/Y=W
+quotient(X,Y,s(Q)) :-
+    quotient(Z,Y,Q), add(Y,Z,X).
 
+% 1) przypadek prosty
+% jezeli x = y, to x%y = 0
+remainder(X,X,zero).
+% 2) przypaek prosty
+% x < y, to 0
+remainder(X,X,zero).
+% 3) przypadek zlozony
+% jezeli X+Y=Q oraz Q%Y=R, to X%Y=R
+remainder(X,Y,R) :-
+   add(X,Y,Q), remainder(Q,Y,R).
+%remainder(X,Y,R) :-
+%    add(R,Y,X).
 
 % ?- shownumber(s(zero),1).
 % true
