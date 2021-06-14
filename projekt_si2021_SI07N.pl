@@ -156,24 +156,106 @@ times(s(X),Y,Z) :- times(X,Y,Q), add(Y,Q,Z).
 % X/Y = Q (W arytmetyce liczb naturalnych )
 quatient()
 
-%  LABORATORIUM 5
-% Użłamy binarnego członka predykatu (X,L), który ma być prawdziwy, jeśli element X jest członkiem listy L.
-member(Head,[Head|Tail]).
-member(X,[Head|Tail]) :- member(X,Tail).
-% | ?- member(a,[a,b,c]).
-%
-% yes
-% | ?- member(e,[a,b,c]).
-%
-%
-% no
-% aby znaleźć elementy listy możemy użyć tej operacji: 
-% | ?- member(X,[a,b,c]).
-%
-% X = a ;
-%
-% X = b ;
-%
-% X = c ;
-%
-% no
+% Laboratorium 5
+
+% Zadanie 1
+% definicja predykatów(naszym celem jest, aby Prolog utworzył wystąpienie tego typu terminu z odpowiedzią, która 
+% jest zgodna z naszymi wskazówkami)
+lepszy(X,Y,podium(X,Y,_)).
+lepszy(X,Y,podium(_,X,Y)).
+lepszy(X,Y,podium(X,_,Y)).
+
+% szukamy najlepszego
+rozwiazanieSzukanePodium(P) :-
+    lepszy(dziecko(piotr,_),dziecko(_,czerwona),P),
+    lepszy(dziecko(jacek,zlota),dziecko(_,zielona),P).
+
+% wyświetlamy kolejność na podium
+wyswietlPodium(podium(X,Y,Z)):-
+    write('Kolejność na podium:'),nl,
+    write('1. '),writeln(X),
+    write('2. '),writeln(Y),
+    write('3. '),writeln(Z).
+
+% Przykład zastosowania
+% ?- rozwiazanieSzukanePodium(P),wyswietlPodium(P),false.
+% Kolejność na podium:
+% 1. dziecko(jacek,zlota)
+% 2. dziecko(piotr,zielona)
+% 3. dziecko(_16006,czerwona)
+% false.
+
+% Zadanie 2
+
+% dom
+dom(kolor, narodowosc, napoj, zwierz, sport).
+
+% ulica(D1,D2,...,D5) - ....
+ulica(d1, d2, d3, d4, d5).
+
+% stoiNaUlicy(D,U) - na jakim miejscu stoi domek
+stoiNaUlicy(D,ulica(D,_,_,_,_)).
+stoiNaUlicy(D,ulica(_,D,_,_,_)).
+stoiNaUlicy(D,ulica(_,_,D,_,_)).
+stoiNaUlicy(D,ulica(_,_,_,D,_)).
+stoiNaUlicy(D,ulica(_,_,_,_,D)).
+
+% obokPoPrawej(X,Y,U) - domek X stoi po prawej stronie od domeka Y
+obokPoPrawej(X,Y,ulica(Y,X,_,_,_)).
+obokPoPrawej(X,Y,ulica(_,Y,X,_,_)).
+obokPoPrawej(X,Y,ulica(_,_,Y,X,_)).
+obokPoPrawej(X,Y,ulica(_,_,_,Y,X)).
+
+% definicja pozostałych potrzebnych ...
+
+% naSriodku(D,U) - osoba mieszka na śriodku ulicy
+naSriodku(D, ulica(_,_,D,_,_)).
+
+% naPierwszym(D,U) - osoba mieszka na początku ulicy
+naPierwszym(D, ulica(D,_,_,_,_)).
+
+% obok
+% obok(X,Y,U) - osoba mieszka obok prawej osoby
+obok(X,Y,U) :- obokPoPrawej(X,Y,U).
+obok(X,Y,U) :- obokPoPrawej(Y,X,U).
+
+% rozwiazanie
+rozwiazanieSzukanaUlica(U):-
+   stoiNaUlicy(dom(czerwony,anglik,_,_,_),U),
+   stoiNaUlicy(dom(_,hiszpan,_,pies,_),U),
+   stoiNaUlicy(dom(zielony,_,kawa,_,_),U),
+   stoiNaUlicy(dom(_,ukrainiec,herbata,_,_),U),
+   obokPoPrawej(dom(zielony,_,_,_,_),dom(bialy,_,_,_,_),U),
+   stoiNaUlicy(dom(_,_,_,slimaki,tenis),U),
+   stoiNaUlicy(dom(zolty,_,_,_,szachy),U),
+   naSriodku(dom(_,_,mleko,_,_), U),
+   naPierwszym(dom(norweg,_,_,_,_),U),
+   obok(dom(_,_,_,_,rugby), dom(_,_,_,lis,_), U),
+   obok(dom(_,_,_,_,rugby), dom(_,_,_,kon,_), U),
+   stoiNaUlicy(dom(_,_,sok_pomaranczowy,_,siatkuwka),U),
+   stoiNaUlicy(dom(_,japonczyk,_,_,go),U),
+   obok(dom(norweg,_,_,_,_), dom(niebieski,_,_,_,_), U),
+   obok(dom(_,_,herbata,_,_), dom(_,_,milo,_,_), U).
+
+% wyświetlamy kolejność na podium
+wyswietlWlasciciela(dom(X,Y,U,K,J)):-
+   write('wlasciceil zebry:'),nl,
+   write('kolor. '),writeln(X),
+   write('narodowosc. '),writeln(Y),
+   write('napoj. '),writeln(U),
+   write('zwierz. '),writeln(K),
+   write('sport. '),writeln(J).
+
+
+% ⼀?- rozwiazanieSzukanaUlica(dom(_,_,_,zebra,_)).
+% false.
+
+% ?- wysietlWlasciciela(dom(_,_,_,zebra,_)).
+% Correct to: "wyswietlWlasciciela(dom(_,_,_,zebra,_))"? yes
+% wlasciceil zebry:
+% kolor. _570
+% narodowosc. _572
+% napoj. _574
+% zwierz. zebra
+% sport. _578
+% true.
